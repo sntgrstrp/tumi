@@ -93,9 +93,6 @@ const Navbar = () => {
                 Comparador
               </a>
               <div className="flex flex-col gap-2 pt-4 border-t border-white/10">
-                <Button variant="outline" className="w-full justify-center">
-                  Iniciar Sesión
-                </Button>
                 <Button className="w-full bg-ubike hover:bg-ubike/90 justify-center" onClick={() => scrollToSection('step-by-step-finder')}>
                   <Search className="h-4 w-4 mr-2" /> Buscar Moto
                 </Button>
