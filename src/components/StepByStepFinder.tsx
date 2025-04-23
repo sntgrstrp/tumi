@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -65,6 +65,10 @@ interface StepProps {
   totalSteps: number;
 }
 
+interface StepByStepFinderProps {
+  resetKey?: number;
+}
+
 const StepIndicator = ({ currentStep, totalSteps }: StepProps) => {
   return (
     <div className="mb-6">
@@ -82,24 +86,18 @@ const StepIndicator = ({ currentStep, totalSteps }: StepProps) => {
   );
 };
 
-const StepByStepFinder = () => {
+const StepByStepFinder = ({ resetKey }: StepByStepFinderProps) => {
   const { toast } = useToast();
   const [showWelcome, setShowWelcome] = useState(true);
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
-  
   const [height, setHeight] = useState(170);
   const [weight, setWeight] = useState(70);
   const [budget, setBudget] = useState(6000000);
-  
   const [selectedUseType, setSelectedUseType] = useState("");
-  
   const [transmissionType, setTransmissionType] = useState("");
-  
   const [hasExperience, setHasExperience] = useState(false);
-  
   const [selectedBrand, setSelectedBrand] = useState("");
-  
   const [engineCC, setEngineCC] = useState("");
   const [power, setPower] = useState("");
   const [engineType, setEngineType] = useState("");
@@ -108,7 +106,28 @@ const StepByStepFinder = () => {
   const [frontBrake, setFrontBrake] = useState("");
   const [rearBrake, setRearBrake] = useState("");
   const [tankCapacity, setTankCapacity] = useState("");
-  
+
+  useEffect(() => {
+    setShowWelcome(true);
+    setCurrentStep(1);
+    setLoading(false);
+    setHeight(170);
+    setWeight(70);
+    setBudget(6000000);
+    setSelectedUseType("");
+    setTransmissionType("");
+    setHasExperience(false);
+    setSelectedBrand("");
+    setEngineCC("");
+    setPower("");
+    setEngineType("");
+    setFrontSuspension("");
+    setRearSuspension("");
+    setFrontBrake("");
+    setRearBrake("");
+    setTankCapacity("");
+  }, [resetKey]);
+
   const totalSteps = hasExperience ? 6 : 5;
 
   const marcas = [
@@ -288,7 +307,7 @@ const StepByStepFinder = () => {
         
         toast({
           title: "¡Búsqueda exitosa!",
-          description: "Hemos encontrado las mejores motocicletas para ti.",
+          description: "Hemos encontrado las mejores motos para ti.",
         });
         
         const resultsSection = document.getElementById('results');
@@ -826,7 +845,7 @@ const StepByStepFinder = () => {
           
           <div className="bg-card rounded-xl shadow-sm border p-6">
             {showWelcome ? (
-              <WelcomeScreen onStart={startFinder} />
+              <WelcomeScreen onStart={() => setShowWelcome(false)} />
             ) : (
               <>
                 <StepIndicator currentStep={currentStep} totalSteps={totalSteps} />

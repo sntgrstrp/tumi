@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import BikeCard from "./BikeCard";
 import { toast } from "../hooks/use-toast";
@@ -7,7 +6,11 @@ import { formatBikeData } from "./results/BikeDataFormatter";
 import ResultsHeader from "./results/ResultsHeader";
 import ResultsLoadingState from "./results/ResultsLoadingState";
 
-const ResultsSection = () => {
+interface ResultsSectionProps {
+  onResetFinder?: () => void;
+}
+
+const ResultsSection = ({ onResetFinder }: ResultsSectionProps) => {
   const [recommendations, setRecommendations] = useState<FormattedBike[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -101,11 +104,10 @@ const ResultsSection = () => {
       </div>
       
       <div className="container mx-auto px-4">
-        <ResultsHeader 
+        <ResultsHeader
           title="Recomendaciones"
           description="Basado en tu perfil, nuestra IA ha encontrado estas motocicletas que se ajustan perfectamente a tus necesidades y características."
         />
-        
         {loading ? (
           <ResultsLoadingState />
         ) : error ? (
@@ -114,8 +116,21 @@ const ResultsSection = () => {
             <p className="mt-2 text-sm text-muted-foreground">
               Por favor intenta con diferentes criterios de búsqueda.
             </p>
+            {onResetFinder && (
+              <div className="mt-8">
+                <button
+                  className="bg-ubike text-white px-5 py-2 rounded-md font-bold hover:bg-ubike/80 transition"
+                  onClick={onResetFinder}
+                  tabIndex={0}
+                  type="button"
+                >
+                  Nueva búsqueda
+                </button>
+              </div>
+            )}
           </div>
         ) : (
+          <>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {recommendations && recommendations.length > 0 ? (
               recommendations.map((bike) => (
@@ -129,6 +144,19 @@ const ResultsSection = () => {
               </div>
             )}
           </div>
+          {recommendations && recommendations.length > 0 && onResetFinder && (
+            <div className="mt-10 flex justify-center">
+              <button
+                className="bg-ubike text-white px-6 py-3 rounded-lg text-base font-semibold shadow-md hover:bg-ubike/90 transition"
+                onClick={onResetFinder}
+                tabIndex={0}
+                type="button"
+              >
+                Nueva búsqueda
+              </button>
+            </div>
+          )}
+          </>
         )}
       </div>
     </section>
