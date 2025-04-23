@@ -97,7 +97,7 @@ const SearchForm = () => {
       
       console.log("Enviando datos:", requestData);
       
-      const response = await fetch("http://localhost:5000/recomendar", {
+      const response = await fetch("https://tumi-api.onrender.com/recomendar", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
